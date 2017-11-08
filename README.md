@@ -14,14 +14,14 @@ This repository contais FRENDS4 Community XsltTransform Task
 
 ## Installing
 You can install the task via FRENDS UI Task view or you can find the nuget package from the following nuget feed
-'https://www.myget.org/F/frends/api/v2'
+`https://www.myget.org/F/frends/api/v2`
 
 ## Building
-Ensure that you have 'https://www.myget.org/F/frends/api/v2' added to your nuget feeds
+Ensure that you have `https://www.myget.org/F/frends/api/v2` added to your nuget feeds
 
 Clone a copy of the repo
 
-git clone 'https://github.com/CommunityHiQ/Frends.Community.Xml.git'
+git clone `https://github.com/CommunityHiQ/Frends.Community.Xml.git`
 
 Restore dependencies
 
