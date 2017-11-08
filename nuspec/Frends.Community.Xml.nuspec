@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+    <metadata>
+        <id>Frends.Community.Xml</id>
+        <version>1.0.0</version>
+        <title>Frends Community Xml</title>
+        <authors>HiQ Finland</authors>
+        <requireLicenseAcceptance>false</requireLicenseAcceptance>
+        <description>Task for xslt transforms.</description>
+        <summary />
+        <dependencies>
+            <dependency id="Frends.Tasks.Attributes" version="[1.2.0]" />
+            <dependency id="Newtonsoft.Json" version="6.0.8" />
+        </dependencies>
+        <frameworkAssemblies>
+            <frameworkAssembly assemblyName="System" targetFramework="" />
+        </frameworkAssemblies>
+    </metadata>
+    <files>
+        <file src="..\Frends.Community.Xml\bin\release\Frends.Community.Xml.dll" target="lib\net452\Frends.Community.Xml.dll" />
+        <file src="..\Frends.Community.Xml\bin\release\Frends.Community.Xml.XML" target="lib\net452\Frends.Community.Xml.XML" />
+    </files>
+</package>

@@ -1,0 +1,33 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frends.Community.Xml", "Frends.Community.Xml\Frends.Community.Xml.csproj", "{BC66BCCD-F134-4221-ACF2-1E16E012D795}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frends.Community.Xml.Tests", "Frends.Community.Xml.Tests\Frends.Community.Xml.Tests.csproj", "{067456C0-086C-46A8-B37F-1405717B7BFC}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "nuspec", "nuspec", "{EF3F9FED-EA82-4340-8C7B-049275E6F955}"
+	ProjectSection(SolutionItems) = preProject
+		nuspec\Frends.Community.Xml.nuspec = nuspec\Frends.Community.Xml.nuspec
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC66BCCD-F134-4221-ACF2-1E16E012D795}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC66BCCD-F134-4221-ACF2-1E16E012D795}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC66BCCD-F134-4221-ACF2-1E16E012D795}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC66BCCD-F134-4221-ACF2-1E16E012D795}.Release|Any CPU.Build.0 = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{067456C0-086C-46A8-B37F-1405717B7BFC}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
