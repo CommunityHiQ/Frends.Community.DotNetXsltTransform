@@ -57,14 +57,14 @@ Common File task to read list of file paths from given directory.
 #### Input
 | Property  | Type  | Description |Example|
 |-----------|-------|-------------|-------|
-| InputXml  | string | Input XmlDocument or string. | <ROW><NAME>Testi Testaa</NAME><ID>123</ID></ROW>	|
+| InputXml  | string | Input XmlDocument or string. | '<ROW><NAME>Testi Testaa</NAME><ID>123</ID></ROW>'	|
 | Xslt  | string | Xslt transform | 	|
 
 #### Parameters
-| Property  | Type  | Description |
-|-----------|-------|-------------|
-| Name  | string | Xslt parameter name | 
-| Value| string | Xslt parameter value |
+| Property  | Type  | Description |Example|
+|-----------|-------|-------------|-------|
+| Name  | string | Xslt parameter name |testName|
+| Value| string | Xslt parameter value |testValue|
 
 #### Result
 | Property  | Type  | Description |
