@@ -1,30 +1,28 @@
 ﻿using NUnit.Framework;
 using System;
-using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
 
-namespace Frends.Community.Xml.Tests
+namespace Frends.Community.DotNetXsltTransform.Tests
 {
     [TestFixture]
     public class XsltTests
     {
         private readonly string testFilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\XsltTestFiles");
-        Input input = new Input();
-        Parameters param = new Parameters();
+        TransformInput input = new TransformInput();
+        TransformParameters param = new TransformParameters();
 
         [Test]
         public void ShouldThrowFormatException()
         {
-                input.Xml = GetTestContent(testFilesPath + "\\Catalog.xml");
-                input.Xslt = GetTestContent(testFilesPath + "\\CatalogTransform.xslt");
+                input.document = GetTestContent(testFilesPath + "\\Catalog.xml");
+                input.stylesheet = GetTestContent(testFilesPath + "\\CatalogTransform.xslt");
             var expected2 = GetTestContent(testFilesPath + "\\TransformedCatalog.txt");
 
             try
             {
-                var result = TransformData.XsltTransform(input,null, CancellationToken.None);
+                var result = TransformData.DotNetXsltTransform(input,null);
             }
             catch (FormatException ex)
             {
@@ -40,12 +38,12 @@ namespace Frends.Community.Xml.Tests
         public void TestXsltWithDotNet()
         {
             
-            input.Xml = GetTestContent(testFilesPath + "\\Catalog.xml");
-            input.Xslt = GetTestContent(testFilesPath + "\\CatalogTransform.xslt");
+            input.document = GetTestContent(testFilesPath + "\\Catalog.xml");
+            input.stylesheet = GetTestContent(testFilesPath + "\\CatalogTransform.xslt");
 
             var expected = GetTestContent(testFilesPath + "\\TransformedCatalog.txt").ToString();
-            var result = TransformData.XsltTransform(input, null, CancellationToken.None);
-            Assert.That(RemoveWhiteSpace(result.Xml), Is.EqualTo(RemoveWhiteSpace(expected).ToString()).IgnoreCase);
+            var ret = TransformData.DotNetXsltTransform(input, null);
+            Assert.That(RemoveWhiteSpace(ret.result), Is.EqualTo(RemoveWhiteSpace(expected).ToString()).IgnoreCase);
         }
 
         [Test]
@@ -54,26 +52,26 @@ namespace Frends.Community.Xml.Tests
             // This test doesn't really need xslt 2.0 features, insted it just test that xsl parameters are working
             var parameters = new[]
             {
-                new Parameters {Name = "testParameter", Value = "Testing the value of the parameter."}
+                new TransformParameters {name = "testParameter", value = "Testing the value of the parameter."}
             };
 
-            input.Xml = GetTestContent(testFilesPath + "\\Catalog.xml");
-            input.Xslt = GetTestContent(testFilesPath + "\\Xslt20ParameterTests.xslt");
+            input.document = GetTestContent(testFilesPath + "\\Catalog.xml");
+            input.stylesheet = GetTestContent(testFilesPath + "\\Xslt20ParameterTests.xslt");
 
             var expected = GetTestContent(testFilesPath + "\\Xslt20ParameterTestResult.xml");
-            var result = TransformData.XsltTransform(input, parameters, CancellationToken.None);
+            var ret = TransformData.DotNetXsltTransform(input, parameters);
 
-            Assert.That(RemoveWhiteSpace(result.Xml), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
+            Assert.That(RemoveWhiteSpace(ret.result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
         }
      
         [Test]
         public void TestXslt10_WithcSharpWithDotNet()
         {
-            input.Xml = GetTestContent(testFilesPath + "\\Xslt10TestCSharp_input.xml");
-            input.Xslt = GetTestContent(testFilesPath + "\\Xslt10TestCSharp.xsl");
+            input.document = GetTestContent(testFilesPath + "\\Xslt10TestCSharp_input.xml");
+            input.stylesheet = GetTestContent(testFilesPath + "\\Xslt10TestCSharp.xsl");
             var expected = GetTestContent(testFilesPath + "\\Xslt10TestCSharp_transformed.xml");
-            var result = TransformData.XsltTransform(input, null, CancellationToken.None);
-            Assert.That(RemoveWhiteSpace(result.Xml), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
+            var ret = TransformData.DotNetXsltTransform(input, null);
+            Assert.That(RemoveWhiteSpace(ret.result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
         }
 
         [TearDown]

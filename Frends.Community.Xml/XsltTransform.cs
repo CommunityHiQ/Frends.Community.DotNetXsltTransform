@@ -8,85 +8,73 @@ using System.Threading;
 using System.Xml;
 using System.Xml.Xsl;
 
-namespace Frends.Community.Xml
+#pragma warning disable 1591
+
+namespace Frends.Community.DotNetXsltTransform
 {
-    /// <summary>
-    /// Input class
-    /// </summary>
-    public class Input
+    public class TransformInput
     {
         /// <summary>
-        /// Input XmlDocument or string.
+        /// Input xml document as XmlDocument or xml string.
         /// </summary>
         [DefaultDisplayType(DisplayType.Text)]
-        public string Xml { get; set; }
+        public string document { get; set; }
 
 
         /// <summary>
-        /// Xslt transform
+        /// Xsl style sheet for transform as string.
         /// </summary>
         [DefaultDisplayType(DisplayType.Text)]
-        public string Xslt { get; set; }
+        public string stylesheet { get; set; }
     }
 
-    /// <summary>
-    /// Xslt parameters class
-    /// </summary>
     [DisplayName("Xslt parameters")]
-    public class Parameters 
+    public class TransformParameters 
     {   
 
         /// <summary>
         /// Xslt parameter name
         /// </summary>
-        public string Name { get; set; }
+        public string name { get; set; }
 
         /// <summary>
         /// Xslt parameter value
         /// </summary>
-        public string Value { get; set; }
+        public string value { get; set; }
     }
 
-    /// <summary>
-    /// Result class
-    /// </summary>
-    public class Result
+    public class TransformResult
     {
         /// <summary>
-        /// Object{string}
+        /// String that contains output from transformation. It might be xml, csv or something else, depending on transformation
         /// </summary>
-        public string Xml { get; set; }
+        public string result { get; set; }
 
     }
 
-    /// <summary>
-    /// TransformData class
-    /// </summary>
     public class TransformData
     {
         /// <summary>
-        /// Xml task for xslt transforms.
-        /// This task uses only .Net parser.
+        /// Task for xslt transforms using .Net.
+        /// This task supports only xslt 1.0 transforms, but it supports C# scripts inside xsl file. If you don't need support for it is propably better to use Xml.Transform task.
         /// </summary>
         /// <param name="input">xml document or string</param>
-        /// <param name="XSLTParameters">Array of KeyValuePairs: Name and Value</param>
-        /// <param name="cToken">Cancellation token</param>
+        /// <param name="XSLTParameters">Array of KeyValuePairs: name and value</param>
         /// <returns>Object{string}</returns>
-        public static Result XsltTransform(Input input, Parameters[] XSLTParameters, CancellationToken cToken)
+        public static TransformResult DotNetXsltTransform(TransformInput input, TransformParameters[] XSLTParameters)
         {
-            cToken.ThrowIfCancellationRequested();
 
-            var result = new Result();
+            var result = new TransformResult();
             var xmlString = "";
 
-            if (input.Xml.GetType() == typeof(string))
+            if (input.document.GetType() == typeof(string))
             {
-                xmlString = input.Xml;
+                xmlString = input.document;
             }
-            else if (input.Xml.GetType() == typeof(XmlDocument))
+            else if (input.document.GetType() == typeof(XmlDocument))
             {
                 var xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(input.Xml);
+                xmlDoc.LoadXml(input.document);
 
                 using (var stringWriter = new StringWriter())
                 using (var xmlTextWriter = XmlWriter.Create(stringWriter))
@@ -101,10 +89,10 @@ namespace Frends.Community.Xml
                 throw new FormatException("Unsupported input type. The supported types are XmlDocument and String.");
             }
 
-            result.Xml = DotNetXsltTransform(xmlString, input.Xslt, XSLTParameters);
+            result.result = DotNetXsltTransformHelper(xmlString, input.stylesheet, XSLTParameters);
             return result;
         }
-        private static String DotNetXsltTransform(string xmlString, string XSLT, Parameters[] XSLTParameters)
+        private static String DotNetXsltTransformHelper(string xmlString, string XSLT, TransformParameters[] XSLTParameters)
         {
             using (var stringReader = new StringReader(XSLT))
             {
@@ -121,7 +109,7 @@ namespace Frends.Community.Xml
                     XsltArgumentList argsList = new XsltArgumentList();
                     if (XSLTParameters != null)
 
-                        XSLTParameters.ToList().ForEach(x => argsList.AddParam(x.Name, "", x.Value));
+                        XSLTParameters.ToList().ForEach(x => argsList.AddParam(x.name, "", x.value));
 
                     MemoryStream memoryStream = new MemoryStream();
                     using (XmlWriter xmlTextWriter = XmlWriter.Create(memoryStream, myXslTransform.OutputSettings))
