@@ -2,11 +2,11 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
     <metadata>
         <id>Frends.Community.DotNetXsltTransform</id>
-        <version>1.1.0</version>
+        <version>1.1.1</version>
         <title>Task for xslt transforms using .Net.</title>
         <authors>HiQ Finland</authors>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <description>Task for xslt transforms.</description>
+        <description>Task for xslt transforms using .Net.</description>
         <summary />
         <dependencies>
             <dependency id="Frends.Tasks.Attributes" version="1.2.1" />
@@ -17,7 +17,7 @@
         </frameworkAssemblies>
     </metadata>
     <files>
-        <file src="..\Frends.Community.Xml\bin\release\Frends.Community.Xml.dll" target="lib\net452\Frends.Community.Xml.dll" />
-        <file src="..\Frends.Community.Xml\bin\release\Frends.Community.Xml.XML" target="lib\net452\Frends.Community.Xml.XML" />
+        <file src="..\Frends.Community.Xml\bin\release\Frends.Community.DotNetXsltTransform.dll" target="lib\net452\Frends.Community.DotNetXsltTransform.dll" />
+        <file src="..\Frends.Community.Xml\bin\release\Frends.Community.DotNetXsltTransform.XML" target="lib\net452\Frends.Community.DotNetXsltTransform.XML" />
     </files>
 </package>
