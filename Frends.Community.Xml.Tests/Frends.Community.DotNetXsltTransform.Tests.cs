@@ -9,20 +9,18 @@ namespace Frends.Community.DotNetXsltTransform.Tests
     [TestFixture]
     public class XsltTests
     {
-        private readonly string testFilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\XsltTestFiles");
-        TransformInput input = new TransformInput();
-        TransformParameters param = new TransformParameters();
+        private readonly string _testFilesPath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "..\\..\\XsltTestFiles");
+        readonly TransformInput _input = new TransformInput();
 
         [Test]
         public void ShouldThrowFormatException()
         {
-                input.document = GetTestContent(testFilesPath + "\\Catalog.xml");
-                input.stylesheet = GetTestContent(testFilesPath + "\\CatalogTransform.xslt");
-            var expected2 = GetTestContent(testFilesPath + "\\TransformedCatalog.txt");
+            _input.Document = GetTestContent(_testFilesPath + "\\Catalog.xml");
+            _input.Stylesheet = GetTestContent(_testFilesPath + "\\CatalogMap.xslt");
 
             try
             {
-                var result = TransformData.DotNetXsltTransform(input,null);
+                TransformData.DotNetXsltTransform(_input, null);
             }
             catch (FormatException ex)
             {
@@ -37,50 +35,50 @@ namespace Frends.Community.DotNetXsltTransform.Tests
         [Test]
         public void TestXsltWithDotNet()
         {
-            
-            input.document = GetTestContent(testFilesPath + "\\Catalog.xml");
-            input.stylesheet = GetTestContent(testFilesPath + "\\CatalogTransform.xslt");
 
-            var expected = GetTestContent(testFilesPath + "\\TransformedCatalog.txt").ToString();
-            var ret = TransformData.DotNetXsltTransform(input, null);
-            Assert.That(RemoveWhiteSpace(ret.result), Is.EqualTo(RemoveWhiteSpace(expected).ToString()).IgnoreCase);
+            _input.Document = GetTestContent(_testFilesPath + "\\Catalog.xml");
+            _input.Stylesheet = GetTestContent(_testFilesPath + "\\CatalogMap.xslt");
+
+            var expected = GetTestContent(_testFilesPath + "\\CatalogResult.txt");
+            var ret = TransformData.DotNetXsltTransform(_input, null);
+            Assert.That(RemoveWhiteSpace(ret.Result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
         }
 
         [Test]
-        public void TestXslt20_WithParametersWithDotNet()
+        public void TestXsltWithParametersWithDotNet()
         {
-            // This test doesn't really need xslt 2.0 features, insted it just test that xsl parameters are working
             var parameters = new[]
             {
-                new TransformParameters {name = "testParameter", value = "Testing the value of the parameter."}
+                new TransformParameters {Name = "testParameter", Value = "Testing the Value of the parameter."}
             };
 
-            input.document = GetTestContent(testFilesPath + "\\Catalog.xml");
-            input.stylesheet = GetTestContent(testFilesPath + "\\Xslt20ParameterTests.xslt");
+            _input.Document = GetTestContent(_testFilesPath + "\\Catalog.xml");
+            _input.Stylesheet = GetTestContent(_testFilesPath + "\\ParameterTestsMap.xslt");
 
-            var expected = GetTestContent(testFilesPath + "\\Xslt20ParameterTestResult.xml");
-            var ret = TransformData.DotNetXsltTransform(input, parameters);
+            var expected = GetTestContent(_testFilesPath + "\\ParameterTestResult.xml");
+            var ret = TransformData.DotNetXsltTransform(_input, parameters);
 
-            Assert.That(RemoveWhiteSpace(ret.result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
+            Assert.That(RemoveWhiteSpace(ret.Result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
         }
-     
+
         [Test]
-        public void TestXslt10_WithcSharpWithDotNet()
+        public void TestXsltWithcSharpWithDotNet()
         {
-            input.document = GetTestContent(testFilesPath + "\\Xslt10TestCSharp_input.xml");
-            input.stylesheet = GetTestContent(testFilesPath + "\\Xslt10TestCSharp.xsl");
-            var expected = GetTestContent(testFilesPath + "\\Xslt10TestCSharp_transformed.xml");
-            var ret = TransformData.DotNetXsltTransform(input, null);
-            Assert.That(RemoveWhiteSpace(ret.result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
+            _input.Document = GetTestContent(_testFilesPath + "\\CSharpTestInput.xml");
+            _input.Stylesheet = GetTestContent(_testFilesPath + "\\CSharpTestMap.xsl");
+
+            var expected = GetTestContent(_testFilesPath + "\\CSharpTestResult.xml");
+            var ret = TransformData.DotNetXsltTransform(_input, null);
+            Assert.That(RemoveWhiteSpace(ret.Result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
         }
 
         [TearDown]
         public void Cleanup()
         {
-            var files = Directory.GetFiles(testFilesPath, "temp *");
+            var files = Directory.GetFiles(_testFilesPath, "temp *");
             files.ToList().ForEach(File.Delete);
         }
-       
+
         public string GetTestContent(string path)
         {
             return File.ReadAllText(path);

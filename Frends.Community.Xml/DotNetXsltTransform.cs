@@ -4,7 +4,6 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Text;
-using System.Threading;
 using System.Xml;
 using System.Xml.Xsl;
 
@@ -15,32 +14,32 @@ namespace Frends.Community.DotNetXsltTransform
     public class TransformInput
     {
         /// <summary>
-        /// Input xml document as XmlDocument or xml string.
+        /// Input xml Document as XmlDocument or xml string.
         /// </summary>
         [DefaultDisplayType(DisplayType.Text)]
-        public string document { get; set; }
+        public string Document { get; set; }
 
 
         /// <summary>
         /// Xsl style sheet for transform as string.
         /// </summary>
         [DefaultDisplayType(DisplayType.Text)]
-        public string stylesheet { get; set; }
+        public string Stylesheet { get; set; }
     }
 
     [DisplayName("Xslt parameters")]
-    public class TransformParameters 
-    {   
+    public class TransformParameters
+    {
 
         /// <summary>
-        /// Xslt parameter name
+        /// Xslt parameter Name
         /// </summary>
-        public string name { get; set; }
+        public string Name { get; set; }
 
         /// <summary>
-        /// Xslt parameter value
+        /// Xslt parameter Value
         /// </summary>
-        public string value { get; set; }
+        public string Value { get; set; }
     }
 
     public class TransformResult
@@ -48,7 +47,7 @@ namespace Frends.Community.DotNetXsltTransform
         /// <summary>
         /// String that contains output from transformation. It might be xml, csv or something else, depending on transformation
         /// </summary>
-        public string result { get; set; }
+        public string Result { get; set; }
 
     }
 
@@ -58,23 +57,23 @@ namespace Frends.Community.DotNetXsltTransform
         /// Task for xslt transforms using .Net.
         /// This task supports only xslt 1.0 transforms, but it supports C# scripts inside xsl file. If you don't need support for it is propably better to use Xml.Transform task.
         /// </summary>
-        /// <param name="input">xml document or string</param>
-        /// <param name="XSLTParameters">Array of KeyValuePairs: name and value</param>
+        /// <param name="input">xml Document or string</param>
+        /// <param name="xsltParameters">Array of KeyValuePairs: Name and Value</param>
         /// <returns>Object{string}</returns>
-        public static TransformResult DotNetXsltTransform(TransformInput input, TransformParameters[] XSLTParameters)
+        public static TransformResult DotNetXsltTransform(TransformInput input, TransformParameters[] xsltParameters)
         {
 
             var result = new TransformResult();
             var xmlString = "";
 
-            if (input.document.GetType() == typeof(string))
+            if (input.Document.GetType() == typeof(string))
             {
-                xmlString = input.document;
+                xmlString = input.Document;
             }
-            else if (input.document.GetType() == typeof(XmlDocument))
+            else if (input.Document.GetType() == typeof(XmlDocument))
             {
                 var xmlDoc = new XmlDocument();
-                xmlDoc.LoadXml(input.document);
+                xmlDoc.LoadXml(input.Document);
 
                 using (var stringWriter = new StringWriter())
                 using (var xmlTextWriter = XmlWriter.Create(stringWriter))
@@ -89,39 +88,34 @@ namespace Frends.Community.DotNetXsltTransform
                 throw new FormatException("Unsupported input type. The supported types are XmlDocument and String.");
             }
 
-            result.result = DotNetXsltTransformHelper(xmlString, input.stylesheet, XSLTParameters);
+            result.Result = DotNetXsltTransformHelper(xmlString, input.Stylesheet, xsltParameters);
             return result;
         }
-        private static String DotNetXsltTransformHelper(string xmlString, string XSLT, TransformParameters[] XSLTParameters)
+        private static string DotNetXsltTransformHelper(string xmlString, string xslt, TransformParameters[] xsltParameters)
         {
-            using (var stringReader = new StringReader(XSLT))
+            using (XmlReader reader = XmlReader.Create(new StringReader(xslt)), inputDocument = XmlReader.Create(new StringReader(xmlString)))
             {
+                var xsltSettings = new XsltSettings(true, true);
 
-                var inputStream = new MemoryStream(Encoding.UTF8.GetBytes(xmlString));
+                var myXslTransform = new XslCompiledTransform();
+                myXslTransform.Load(reader, xsltSettings, new XmlUrlResolver());
 
-                using (XmlReader reader = XmlReader.Create(new StringReader(XSLT)), Inputdocument = XmlReader.Create(new StringReader(xmlString)))
+                var argsList = new XsltArgumentList();
+                if (xsltParameters != null)
+
+                    xsltParameters.ToList().ForEach(x => argsList.AddParam(x.Name, "", x.Value));
+
+                using (var memoryStream = new MemoryStream())
+                using (var xmlTextWriter = XmlWriter.Create(memoryStream, myXslTransform.OutputSettings))
                 {
-                    XsltSettings xslt_settings = new XsltSettings(true, true);
+                    myXslTransform.Transform(inputDocument, argsList, xmlTextWriter);
+                    var utf8WithoutBom = myXslTransform.OutputSettings.Encoding; // Encoding.UTF8;
 
-                    XslCompiledTransform myXslTransform = new XslCompiledTransform();
-                    myXslTransform.Load(reader, xslt_settings, new XmlUrlResolver());
+                    var output = utf8WithoutBom.GetString(memoryStream.ToArray());
+                    output = output.Replace("\n", Environment.NewLine);
+                    output = output.Trim(new char[] { '\uFEFF' }); // removu utf-16 bom
+                    return output;
 
-                    XsltArgumentList argsList = new XsltArgumentList();
-                    if (XSLTParameters != null)
-
-                        XSLTParameters.ToList().ForEach(x => argsList.AddParam(x.name, "", x.value));
-
-                    MemoryStream memoryStream = new MemoryStream();
-                    using (XmlWriter xmlTextWriter = XmlWriter.Create(memoryStream, myXslTransform.OutputSettings))
-                    {
-                        myXslTransform.Transform(Inputdocument, argsList, xmlTextWriter);
-                        Encoding UTF8WithoutBom = myXslTransform.OutputSettings.Encoding; // Encoding.UTF8;
-
-                        var output = UTF8WithoutBom.GetString(memoryStream.ToArray());
-                        output = output.Replace("\n", Environment.NewLine);
-                        output = output.Trim(new char[] { '\uFEFF' }); // removu utf-16 bom
-                        return output;
-                    }
                 }
             }
         }
