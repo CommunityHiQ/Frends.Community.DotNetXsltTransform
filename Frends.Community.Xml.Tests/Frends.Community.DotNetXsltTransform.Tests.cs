@@ -13,26 +13,6 @@ namespace Frends.Community.DotNetXsltTransform.Tests
         readonly TransformInput _input = new TransformInput();
 
         [Test]
-        public void ShouldThrowFormatException()
-        {
-            _input.Document = GetTestContent(_testFilesPath + "\\Catalog.xml");
-            _input.Stylesheet = GetTestContent(_testFilesPath + "\\CatalogMap.xslt");
-
-            try
-            {
-                TransformData.DotNetXsltTransform(_input, null);
-            }
-            catch (FormatException ex)
-            {
-                Assert.AreEqual("Unsupported input type. The supported types are XmlDocument and String.", ex.Message);
-            }
-            catch (Exception e)
-            {
-                Assert.Fail(string.Format("Unexpected exception of type {0} caught: {1}", e.GetType(), e.Message));
-            }
-        }
-
-        [Test]
         public void TestXsltWithDotNet()
         {
 
