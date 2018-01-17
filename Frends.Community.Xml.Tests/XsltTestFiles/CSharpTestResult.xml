@@ -1,0 +1,10 @@
+<circles xmlns:msxsl="urn:schemas-microsoft-com:xslt" xmlns:user="urn:my-scripts">
+  <circle>
+    <radius>12</radius>
+    <circumference>75.36</circumference>
+  </circle>
+  <circle>
+    <radius>37.5</radius>
+    <circumference>235.5</circumference>
+  </circle>
+</circles>  
