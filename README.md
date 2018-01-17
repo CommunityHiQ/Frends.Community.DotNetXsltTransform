@@ -57,12 +57,7 @@ Community XML task for xslt transforms using .NET parser. This task supports onl
 #### Input
 | Property  | Type  | Description |Example|
 |-----------|-------|-------------|-------|
-| Document  | string | Input XmlDocument or string. | ```
-<ROW>
-	<NAME>MR XML</NAME>
-	<ID>2017</ID>
-</ROW>
-```|
+| Document  | string | Input XmlDocument or string. | &lt;ROW&gt;<br>&nbsp;&nbsp;&nbsp;&lt;NAME&gt;MR XML&lt;/NAME&gt;<br>&nbsp;&nbsp;&nbsp;&lt;ID&gt;2017&lt;/ID&gt;<br>&lt;/ROW&gt;|
 | Stylesheet  | string | Xslt transform | <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><br>	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" /> <br><xsl:param name="ID" /><br><xsl:template match="/"><br>&nbsp;&nbsp;&nbsp;```<person>```<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```<name>```<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<xsl:value-of select="ROW/NAME" /></name><br><name>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<xsl:value-of select="$ID" /><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;```</name>```<br>&nbsp;&nbsp;&nbsp;```</person>```<br></xsl:template><br></xsl:stylesheet>|
 
 
