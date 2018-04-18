@@ -1,9 +1,8 @@
-﻿using Frends.Tasks.Attributes;
-using System;
+﻿using System;
 using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Xml;
 using System.Xml.Xsl;
 
@@ -16,14 +15,14 @@ namespace Frends.Community.DotNetXsltTransform
         /// <summary>
         /// Input xml Document as XmlDocument or xml string.
         /// </summary>
-        [DefaultDisplayType(DisplayType.Text)]
+        [DisplayFormat(DataFormatString = "Text")]
         public string Document { get; set; }
 
 
         /// <summary>
         /// Xsl style sheet for transform as string.
         /// </summary>
-        [DefaultDisplayType(DisplayType.Text)]
+        [DisplayFormat(DataFormatString = "Text")]
         public string Stylesheet { get; set; }
     }
 

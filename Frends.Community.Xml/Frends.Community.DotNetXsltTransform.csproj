@@ -37,11 +37,8 @@
     <DocumentationFile>bin\Release\Frends.Community.DotNetXsltTransform.xml</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Frends.Tasks.Attributes, Version=1.2.0.0, Culture=neutral, PublicKeyToken=258fd606323928fc, processorArchitecture=MSIL">
-      <HintPath>..\packages\Frends.Tasks.Attributes.1.2.1\lib\net40\Frends.Tasks.Attributes.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
@@ -53,9 +50,6 @@
   <ItemGroup>
     <Compile Include="DotNetXsltTransform.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
