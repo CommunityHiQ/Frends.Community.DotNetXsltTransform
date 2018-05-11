@@ -1,5 +1,4 @@
-﻿using System.Collections.Concurrent;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -57,9 +56,6 @@ namespace Frends.Community.DotNetXsltTransform
 
     public class TransformData
     {
-        // cache xslt for better performance
-        private static readonly ConcurrentDictionary<string, XslCompiledTransform> XslTansformCache = new ConcurrentDictionary<string, XslCompiledTransform>();
-
         /// <summary>
         /// Task for xslt transforms using .Net.
         /// This task supports only xslt 1.0 transforms, but it supports C# scripts inside xsl file. If you don't need support for it is propably better to use Xml.Transform task.
@@ -93,23 +89,12 @@ namespace Frends.Community.DotNetXsltTransform
                 throw new FormatException("Unsupported input type. The supported types are XmlDocument, String or file path.");
             }
 
-            string hash;
-            using (var stream = new MemoryStream(System.Text.Encoding.UTF8.GetBytes(input.Stylesheet)))
+            var xslt = new XslCompiledTransform();
+            using (var xslReader = XmlReader.Create(new StringReader(input.Stylesheet)))
             {
-                var hashAlgorithm = System.Security.Cryptography.MD5.Create();
-                hash = Convert.ToBase64String(hashAlgorithm.ComputeHash(stream));
+                xslt.Load(xslReader, new XsltSettings(true, true), new XmlUrlResolver());
             }
-
-            var xslt = XslTansformCache.GetOrAdd(hash, h =>
-            {
-                using (var xslReader = XmlReader.Create(new StringReader(input.Stylesheet)))
-                {
-                    var xct = new XslCompiledTransform();
-                    xct.Load(xslReader, new XsltSettings(true, true), new XmlUrlResolver());
-                    return xct;
-                }
-            });
-
+            
             result.Result = input.IsFile
                 ? DotNetXsltTransformFileHelper(xmlString, xslt, xsltParameters)
                 : DotNetXsltTransformHelper(xmlString, xslt, xsltParameters);
