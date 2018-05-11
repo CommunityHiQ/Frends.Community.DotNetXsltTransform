@@ -54,6 +54,16 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="XsltTestFiles\Catalog.xml" />
+    <Content Include="XsltTestFiles\CatalogMap.xslt" />
+    <Content Include="XsltTestFiles\CatalogResult.txt" />
+    <Content Include="XsltTestFiles\CSharpTestInput.xml" />
+    <Content Include="XsltTestFiles\CSharpTestMap.xsl" />
+    <Content Include="XsltTestFiles\CSharpTestResult.xml" />
+    <Content Include="XsltTestFiles\ParameterTestResult.xml" />
+    <Content Include="XsltTestFiles\ParameterTestsMap.xslt" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
     <PropertyGroup>

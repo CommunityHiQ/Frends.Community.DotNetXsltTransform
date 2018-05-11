@@ -18,7 +18,19 @@ namespace Frends.Community.DotNetXsltTransform.Tests
 
             _input.Document = GetTestContent(_testFilesPath + "\\Catalog.xml");
             _input.Stylesheet = GetTestContent(_testFilesPath + "\\CatalogMap.xslt");
+            _input.IsFile = false;
+            var expected = GetTestContent(_testFilesPath + "\\CatalogResult.txt");
+            var ret = TransformData.DotNetXsltTransform(_input, null);
+            Assert.That(RemoveWhiteSpace(ret.Result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
+        }
 
+        [Test]
+        public void TestXsltWithDotNetWithFile()
+        {
+
+            _input.Document = _testFilesPath + "\\Catalog.xml";
+            _input.Stylesheet = GetTestContent(_testFilesPath + "\\CatalogMap.xslt");
+            _input.IsFile = true;
             var expected = GetTestContent(_testFilesPath + "\\CatalogResult.txt");
             var ret = TransformData.DotNetXsltTransform(_input, null);
             Assert.That(RemoveWhiteSpace(ret.Result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
@@ -34,7 +46,7 @@ namespace Frends.Community.DotNetXsltTransform.Tests
 
             _input.Document = GetTestContent(_testFilesPath + "\\Catalog.xml");
             _input.Stylesheet = GetTestContent(_testFilesPath + "\\ParameterTestsMap.xslt");
-
+            _input.IsFile = false;
             var expected = GetTestContent(_testFilesPath + "\\ParameterTestResult.xml");
             var ret = TransformData.DotNetXsltTransform(_input, parameters);
 
@@ -46,7 +58,7 @@ namespace Frends.Community.DotNetXsltTransform.Tests
         {
             _input.Document = GetTestContent(_testFilesPath + "\\CSharpTestInput.xml");
             _input.Stylesheet = GetTestContent(_testFilesPath + "\\CSharpTestMap.xsl");
-
+            _input.IsFile = false;
             var expected = GetTestContent(_testFilesPath + "\\CSharpTestResult.xml");
             var ret = TransformData.DotNetXsltTransform(_input, null);
             Assert.That(RemoveWhiteSpace(ret.Result), Is.EqualTo(RemoveWhiteSpace(expected)).IgnoreCase);
