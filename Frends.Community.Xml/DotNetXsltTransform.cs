@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
@@ -88,25 +87,25 @@ namespace Frends.Community.DotNetXsltTransform
             {
                 throw new FormatException("Unsupported input type. The supported types are XmlDocument, String or file path.");
             }
-
+            
             var xslt = new XslCompiledTransform();
             using (var xslReader = XmlReader.Create(new StringReader(input.Stylesheet)))
             {
                 xslt.Load(xslReader, new XsltSettings(true, true), new XmlUrlResolver());
             }
-            
+
+            var argsList = new XsltArgumentList();
+            xsltParameters?.ToList().ForEach(x => argsList.AddParam(x.Name, "", x.Value));
+
             result.Result = input.IsFile
-                ? DotNetXsltTransformFileHelper(xmlString, xslt, xsltParameters)
-                : DotNetXsltTransformHelper(xmlString, xslt, xsltParameters);
+                ? DotNetXsltTransformFileHelper(xmlString, xslt, argsList)
+                : DotNetXsltTransformHelper(xmlString, xslt, argsList);
 
             return result;
         }
 
-        private static string DotNetXsltTransformHelper(string xmlString, XslCompiledTransform xslt, IEnumerable<TransformParameters> xsltParameters)
+        private static string DotNetXsltTransformHelper(string xmlString, XslCompiledTransform xslt, XsltArgumentList argsList)
         {
-            var argsList = new XsltArgumentList();
-            xsltParameters?.ToList().ForEach(x => argsList.AddParam(x.Name, "", x.Value));
-
             using (var inputDocument = XmlReader.Create(new StringReader(xmlString)))
             using (var memoryStream = new MemoryStream())
             using (var xmlTextWriter = XmlWriter.Create(memoryStream, xslt.OutputSettings))
@@ -121,11 +120,8 @@ namespace Frends.Community.DotNetXsltTransform
             }
         }
 
-        private static string DotNetXsltTransformFileHelper(string xmlLocation, XslCompiledTransform xslt, IEnumerable<TransformParameters> xsltParameters)
+        private static string DotNetXsltTransformFileHelper(string xmlLocation, XslCompiledTransform xslt, XsltArgumentList argsList)
         {
-            var argsList = new XsltArgumentList();
-            xsltParameters?.ToList().ForEach(x => argsList.AddParam(x.Name, "", x.Value));
-
             using (var inputDocument = XmlReader.Create(new StreamReader(xmlLocation)))
             using (var memoryStream = new MemoryStream())
             using (var xmlTextWriter = XmlWriter.Create(memoryStream, xslt.OutputSettings))
