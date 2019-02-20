@@ -13,13 +13,13 @@ namespace Frends.Community.DotNetXsltTransform
     public class TransformInput
     {
         /// <summary>
-        /// Input xml Document as XmlDocument, xml string or file location when using IsFile.
+        /// Input XML Document as XmlDocument, XML string or file location when IsFile is true.
         /// </summary>
         [DisplayFormat(DataFormatString = "Text")]
         public string Document { get; set; }
 
         /// <summary>
-        /// Input is file. Enables streaming for big files.
+        /// Input (Document) is file. Enables streaming for big files.
         /// </summary>
         public bool IsFile { get; set; }
 
@@ -57,7 +57,7 @@ namespace Frends.Community.DotNetXsltTransform
     {
         /// <summary>
         /// Task for xslt transforms using .Net.
-        /// This task supports only xslt 1.0 transforms, but it supports C# scripts inside xsl file. If you don't need support for it is propably better to use Xml.Transform task.
+        /// This task supports only xslt 1.0 transforms, but it supports C# scripts inside xsl file. If you don't need support for it, it is probably better to use Xml.Transform task.
         /// </summary>
         /// <param name="input">xml Document or string</param>
         /// <param name="xsltParameters">Array of KeyValuePairs: Name and Value</param>
@@ -87,7 +87,7 @@ namespace Frends.Community.DotNetXsltTransform
             {
                 throw new FormatException("Unsupported input type. The supported types are XmlDocument, String or file path.");
             }
-            
+
             var xslt = new XslCompiledTransform();
             using (var stringReader = new StringReader(input.Stylesheet))
             using (var xsltReader = XmlReader.Create(stringReader))

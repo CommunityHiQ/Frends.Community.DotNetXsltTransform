@@ -8,6 +8,8 @@
 		 - [Parameters](#arameters)
 		 - [Result](#result)
    - [License](#license)
+   - [Change Log](#change-log)
+
        
 # Frends.Community.DotNetXsltTransform
 This repository contais FRENDS4 Community XsltTransform Task
@@ -75,3 +77,9 @@ Community XML task for xslt transforms using .NET parser. This task supports onl
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details
+
+# Change Log
+
+| Version             | Changes                 |
+| ---------------------| ---------------------|
+| 1.3.0 | Added option for document, that it can be read from file. |
