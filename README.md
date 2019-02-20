@@ -8,6 +8,8 @@
 		 - [Parameters](#arameters)
 		 - [Result](#result)
    - [License](#license)
+   - [Change Log](#change-log)
+
        
 # Frends.Community.DotNetXsltTransform
 This repository contais FRENDS4 Community XsltTransform Task
@@ -57,7 +59,8 @@ Community XML task for xslt transforms using .NET parser. This task supports onl
 #### Input
 | Property  | Type  | Description |Example|
 |-----------|-------|-------------|-------|
-| Document  | string | Input XmlDocument or string. | &lt;ROW&gt;<br>&nbsp;&nbsp;&nbsp;&lt;NAME&gt;MR XML&lt;/NAME&gt;<br>&nbsp;&nbsp;&nbsp;&lt;ID&gt;2017&lt;/ID&gt;<br>&lt;/ROW&gt;|
+| Document  | string | Input xml Document as XmlDocument, xml string or file location when using IsFile. | &lt;ROW&gt;<br>&nbsp;&nbsp;&nbsp;&lt;NAME&gt;MR XML&lt;/NAME&gt;<br>&nbsp;&nbsp;&nbsp;&lt;ID&gt;2017&lt;/ID&gt;<br>&lt;/ROW&gt;|
+| IsFile	| bool	| true |
 | Stylesheet  | string | Xslt transform | <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"><br>	<xsl:output method="xml" version="1.0" encoding="UTF-8" indent="yes" /> <br><xsl:param name="ID" /><br><xsl:template match="/"><br>&nbsp;&nbsp;&nbsp;&lt;person&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;name&gt;<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<xsl:value-of select="ROW/NAME" /></name><br><name>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<xsl:value-of select="$ID" /><br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&lt;/name&gt;<br>&nbsp;&nbsp;&nbsp;&lt;/person&gt;<br></xsl:template><br></xsl:stylesheet>|
 
 
@@ -74,3 +77,9 @@ Community XML task for xslt transforms using .NET parser. This task supports onl
 
 ## License
 This project is licensed under the MIT License - see the LICENSE file for details
+
+# Change Log
+
+| Version             | Changes                 |
+| ---------------------| ---------------------|
+| 1.3.0 | Added option for document, that it can be read from file. |
