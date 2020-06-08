@@ -12,7 +12,10 @@
 
        
 # Frends.Community.DotNetXsltTransform
-This repository contais FRENDS4 Community XsltTransform Task
+
+This task is deprecated, you should use [Frends.Xml.Standard](https://github.com/FrendsPlatform/Frends.Xml.Standard) insted (it supports C# user scripts too). 
+
+Community XML task for XSL transforms using .NET parser. This task supports only xslt 1.0, but it supports C# user scripts. If you don't need it, it's probably better to use Xml.Transform task.
 
 ## Installing
 You can install the task via FRENDS UI Task view or you can find the nuget package from the following nuget feed
